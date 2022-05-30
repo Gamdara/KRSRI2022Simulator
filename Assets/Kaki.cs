@@ -19,8 +19,8 @@ public class Kaki : MonoBehaviour
     [SerializeField] int side;
     [SerializeField] int letak;
 
-    float fermurLength = 10f;
-    float tibiaLength = 7f;
+    float fermurLength = 5f;
+    float tibiaLength = 8f;
     
     float speed = 2f;
     
@@ -61,7 +61,7 @@ public class Kaki : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         
         if(this.side == 1){
-            Queue<Vector3> steps = trajectory(fw,fw+new Vector3(0,4,newT.z-fw.z),bw + new Vector3(0,4,newT.z-fw.z),bw,0.1f);
+            Queue<Vector3> steps = trajectory(fw,fw+new Vector3(0,3,newT.z-fw.z),bw + new Vector3(0,3,newT.z-fw.z),bw,0.1f);
             foreach(Vector3 step in steps){
                 // step.x *= this.posisi;
                 yield return StartCoroutine(InversKinematic(step));
@@ -81,7 +81,7 @@ public class Kaki : MonoBehaviour
                 yield return new WaitForSeconds(0.15f);
             }
 
-            Queue<Vector3> steps = trajectory(fw,fw+new Vector3(0,4,newT.z-fw.z),bw + new Vector3(0,4,newT.z-fw.z),bw,0.1f);
+            Queue<Vector3> steps = trajectory(fw,fw+new Vector3(0,3,newT.z-fw.z),bw + new Vector3(0,3,newT.z-fw.z),bw,0.1f);
             foreach(Vector3 step in steps){
                 yield return StartCoroutine(InversKinematic(step));
                 yield return new WaitForSeconds(0.15f);
@@ -147,26 +147,26 @@ public class Kaki : MonoBehaviour
 
     public IEnumerator step2(){
         if(this.side == 1){
-            Queue<Vector3> steps = trajectory(new Vector3(-3,0,0),new Vector3(-3,3,0),new Vector3(3,3,0),new Vector3(3,0,0),0.1f);
+            Queue<Vector3> steps = trajectory(new Vector3(-2,0,0),new Vector3(-2,3,0),new Vector3(2,3,0),new Vector3(2,0,0),0.1f);
             foreach(Vector3 step in steps){
                 yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(step, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.15f);
             }
             yield return new WaitForSeconds(0.15f);
-            Queue<Vector3> backSteps = trajectory(new Vector3(3,0,0),new Vector3(3,0,0),new Vector3(-3,0,0),new Vector3(-3,0,0),0.1f);
+            Queue<Vector3> backSteps = trajectory(new Vector3(2,0,0),new Vector3(2,0,0),new Vector3(-2,0,0),new Vector3(-2,0,0),0.1f);
             foreach(Vector3 bStep in backSteps){
                 yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(bStep, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.15f);
             }
         }
         else{
-            Queue<Vector3> backSteps = trajectory(new Vector3(3,0,0),new Vector3(3,0,0),new Vector3(-3,0,0),new Vector3(-3,0,0),0.1f);
+            Queue<Vector3> backSteps = trajectory(new Vector3(2,0,0),new Vector3(2,0,0),new Vector3(-2,0,0),new Vector3(-2,0,0),0.1f);
             foreach(Vector3 bStep in backSteps){
                 yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(bStep, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.15f);
             }
             yield return new WaitForSeconds(0.15f);
-            Queue<Vector3> steps = trajectory(new Vector3(-3,0,0),new Vector3(-3,3,0),new Vector3(3,3,0),new Vector3(3,0,0),0.1f);
+            Queue<Vector3> steps = trajectory(new Vector3(-2,0,0),new Vector3(-2,3,0),new Vector3(2,3,0),new Vector3(2,0,0),0.1f);
             foreach(Vector3 step in steps){
                 yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(step, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.15f);
@@ -176,27 +176,27 @@ public class Kaki : MonoBehaviour
 
     // yield return StartCoroutine(InversKinematic(target + new Vector3(-2* this.posisi,0,0) ));
     public IEnumerator sideStep(){
-        if((this.side == 1 && this.posisi == 1) || (this.posisi == 1 && this.side == -1)){
-            Queue<Vector3> steps = trajectory(new Vector3(0,0,-2),new Vector3(0,4,-2),new Vector3(0,4,2),new Vector3(0,0,2),0.1f);
+        if((this.side == 1)){
+            Queue<Vector3> steps = trajectory(new Vector3(0,0,-1 * this.posisi),new Vector3(0,1,-1* this.posisi),new Vector3(0,1,1* this.posisi),new Vector3(0,0,1* this.posisi),0.1f);
             foreach(Vector3 step in steps){
-                yield return StartCoroutine(InversKinematic(target + Vector3.Scale(step, new Vector3(this.side * this.posisi,1,1))));
+                yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(step, new Vector3( this.posisi,1,1))));
                 yield return new WaitForSeconds(0.2f);
             }
-            Queue<Vector3> backSteps = trajectory(new Vector3(0,0,2),new Vector3(0,0,2),new Vector3(0,0,-2),new Vector3(0,0,-2),0.1f);
+            Queue<Vector3> backSteps = trajectory(new Vector3(0,0,1* this.posisi),new Vector3(0,0,1* this.posisi),new Vector3(0,0,-1* this.posisi),new Vector3(0,0,-1* this.posisi),0.1f);
             foreach(Vector3 bStep in backSteps){
-                yield return StartCoroutine(InversKinematic(target + Vector3.Scale(bStep, new Vector3(this.side* this.posisi,1,1))));
+                yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(bStep, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.2f);
             }
         }
         else{
-            Queue<Vector3> backSteps = trajectory(new Vector3(0,0,2),new Vector3(0,0,2),new Vector3(0,0,-2),new Vector3(0,0,-2),0.1f);
+            Queue<Vector3> backSteps = trajectory(new Vector3(0,0,1* this.posisi),new Vector3(0,0,1* this.posisi),new Vector3(0,0,-1* this.posisi),new Vector3(0,0,-1* this.posisi),0.1f);
             foreach(Vector3 bStep in backSteps){
-                yield return StartCoroutine(InversKinematic(target + Vector3.Scale(bStep, new Vector3(this.side* this.posisi,1,1))));
+                yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(bStep, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.2f);
             }
-            Queue<Vector3> steps = trajectory(new Vector3(0,0,-2),new Vector3(0,4,-2),new Vector3(0,4,2),new Vector3(0,0,2),0.1f);
+            Queue<Vector3> steps = trajectory(new Vector3(0,0,-1 * this.posisi),new Vector3(0,1,-1* this.posisi),new Vector3(0,1,1* this.posisi),new Vector3(0,0,1* this.posisi),0.1f);
             foreach(Vector3 step in steps){
-                yield return StartCoroutine(InversKinematic(target + Vector3.Scale(step, new Vector3(this.side* this.posisi,1,1))));
+                yield return StartCoroutine(InversKinematic(target2 + Vector3.Scale(step, new Vector3(this.posisi,1,1))));
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -224,7 +224,7 @@ public class Kaki : MonoBehaviour
         Coxa = getChildGameObject(this.gameObject,"Coxa");
         Fermur = getChildGameObject(this.gameObject,"Fermur");
         Tibia = getChildGameObject(this.gameObject,"Tibia");
-        target = new Vector3(0, -8, 10);
+        target = new Vector3(0, -10, 4);
         
         if(letak == 1)
             target2 = rotateMatrix(this.target, -45 * this.posisi);

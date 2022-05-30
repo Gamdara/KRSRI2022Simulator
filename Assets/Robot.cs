@@ -120,6 +120,8 @@ public class Robot : MonoBehaviour
             StartCoroutine(step2());
         if (Input.GetKeyDown(KeyCode.B))
             StartCoroutine(rotation());
+        if (Input.GetKeyDown(KeyCode.N))
+            StartCoroutine(sideStep());
         
     }
 }
